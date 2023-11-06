@@ -7,8 +7,7 @@ def results_to_dataframe(probs, texts):
     return df_result
 
 def concatenate_dataframes(df_embeddings, df_user_embedding):
-    df = pd.concat([df_embeddings, df_user_embedding], ignore_index=True)
-    return df
+    return pd.concat([df_embeddings, df_user_embedding], ignore_index=True)
 
 
 def get_umap_dataframe(model, embeddings):

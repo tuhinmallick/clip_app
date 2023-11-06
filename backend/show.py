@@ -8,9 +8,7 @@ from backend.load import load_yaml
 
 
 def open_image(url):
-    # Set the URL of a random image to fetch
-    image = Image.open(requests.get(url, stream=True).raw)
-    return image
+    return Image.open(requests.get(url, stream=True).raw)
 
 
 def plot_results(df, y_label, x_label, color_discrete_sequence):
@@ -46,18 +44,22 @@ def plot_caption_clusters(df, x, y, hover_data, color, size, text, opacity=0.7):
     return fig
 
 def plot_image_clusters(df):
-    marker_chart = alt.Chart(df.rename(columns={'url': 'image'})).mark_circle().encode(
-                    x='x',
-                    y='y',
-                    size='size',
-                    color='artist',
-                    tooltip=['image', 'artist']).properties(
-                    width=800,
-                    height=600,
-                ).configure_legend(
-        disable=True
+    return (
+        alt.Chart(df.rename(columns={'url': 'image'}))
+        .mark_circle()
+        .encode(
+            x='x',
+            y='y',
+            size='size',
+            color='artist',
+            tooltip=['image', 'artist'],
+        )
+        .properties(
+            width=800,
+            height=600,
+        )
+        .configure_legend(disable=True)
     )
-    return marker_chart
 
 
 def tech_summary_side_bar(config_key):

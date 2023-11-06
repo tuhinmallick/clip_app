@@ -49,10 +49,7 @@ def calculate_image_features(images: list, processor, model, normalise=True):
     """
     inputs = processor(images=images, return_tensors="pt")
     image_features = model.get_image_features(**inputs)
-    if normalise:
-        return _normalise_features(image_features)
-    else:
-        return image_features
+    return _normalise_features(image_features) if normalise else image_features
 
 
 def calculate_text_features(texts: list, tokenizer, model, normalise=True):
@@ -71,10 +68,7 @@ def calculate_text_features(texts: list, tokenizer, model, normalise=True):
     """
     inputs = tokenizer(texts, padding=True, return_tensors="pt")
     text_features = model.get_text_features(**inputs)
-    if normalise:
-        return _normalise_features(text_features)
-    else:
-        return text_features
+    return _normalise_features(text_features) if normalise else text_features
 
 
 def _calculate_similarity(input_features, output_features):
@@ -88,8 +82,7 @@ def _calculate_similarity(input_features, output_features):
     Returns:
         torch.Tensor: A tensor of the cosine similarity between input and output features.
     """
-    similarity = (100.0 * input_features @ output_features.T).softmax(dim=-1)
-    return similarity
+    return (100.0 * input_features @ output_features.T).softmax(dim=-1)
 
 
 def classify_images(text_inputs: list, images: list, processor, model, tokeniser):
@@ -108,8 +101,7 @@ def classify_images(text_inputs: list, images: list, processor, model, tokeniser
     """
     text_input_features = calculate_text_features(text_inputs, tokeniser, model)
     image_output_features = calculate_image_features(images, processor, model)
-    predictions = _calculate_similarity(image_output_features, text_input_features)
-    return predictions
+    return _calculate_similarity(image_output_features, text_input_features)
 
 
 def classify_texts(text_inputs: list, texts: list,  model, tokeniser):
@@ -127,8 +119,7 @@ def classify_texts(text_inputs: list, texts: list,  model, tokeniser):
     """
     text_input_features = calculate_text_features(text_inputs, tokeniser, model)
     text_output_features = calculate_text_features(texts, tokeniser, model)
-    predictions = _calculate_similarity(text_output_features, text_input_features)
-    return predictions
+    return _calculate_similarity(text_output_features, text_input_features)
 
 
 

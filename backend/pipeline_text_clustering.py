@@ -8,8 +8,13 @@ from backend.dataframes import concatenate_dataframes, get_umap_dataframe
 
 
 def get_user_input_dataframe(user_input: str, user_embedding: np.array):
-    df_user_input = pd.DataFrame({'caption': [user_input], 'category': ['user'], 'embed': [user_embedding]})
-    return df_user_input
+    return pd.DataFrame(
+        {
+            'caption': [user_input],
+            'category': ['user'],
+            'embed': [user_embedding],
+        }
+    )
 
 
 def delete_row(df, _index):
