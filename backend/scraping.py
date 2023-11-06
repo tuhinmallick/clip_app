@@ -4,12 +4,10 @@ from bs4 import BeautifulSoup
 
 def get_response(prefix, suffix):
     url = prefix+suffix
-    response = requests.get(url)
-    return response
+    return requests.get(url)
 
 def get_soup(category):
-    soup = BeautifulSoup(category.text, 'html.parser')
-    return soup
+    return BeautifulSoup(category.text, 'html.parser')
 
 
 def get_unsplash_urls_from_soup(soup):

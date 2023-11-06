@@ -13,9 +13,7 @@ def get_unsplash_images():
     config = load_yaml("config.yaml")  # get the unsplash image categories - this is cached
     unsplash_categories = config['UNSPLASH_CATEGORIES']
     unsplash_categories.sort()
-    # get all the unsplash image category:url dictionary - this is cached
-    category_image_urls = scrape_unsplash_urls('https://unsplash.com/t/', unsplash_categories)
-    return category_image_urls
+    return scrape_unsplash_urls('https://unsplash.com/t/', unsplash_categories)
 
 
 def image_classification_loop(unsplash_urls: list, processor, model, tokenizer):
@@ -50,7 +48,7 @@ def image_classification_loop(unsplash_urls: list, processor, model, tokenizer):
     # Prompt the user to enter labels for the image
     text_input_string = st.text_input('Choose some contrasting labels for this image - seperate labels with a comma \
                             e.g. "dog, cat" as this is how labels are split', 'dog, cat' )
-    labels = [i for i in text_input_string.split(",")]
+    labels = list(text_input_string.split(","))
 
     # Use the pre-trained model to predict the probabilities of the provided labels
     predictions = classify_images(labels, st.session_state['image_keep'], processor, model, tokenizer)
@@ -62,8 +60,7 @@ def image_classification_loop(unsplash_urls: list, processor, model, tokenizer):
 
     # Allow the user to get a new image
     another_image= st.empty()
-    next_headline = another_image.button('Get new image')
-    if next_headline:
+    if next_headline := another_image.button('Get new image'):
         st.session_state.pop('image_keep')
         another_image.empty()
         st.experimental_rerun()

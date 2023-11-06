@@ -12,8 +12,7 @@ st.set_page_config(layout="wide")
 
 @st.cache_data
 def load_cached_embeddings(path: str):
-    df = pd.read_pickle(path)
-    return df
+    return pd.read_pickle(path)
 
 
 config = load_yaml("config.yaml")
